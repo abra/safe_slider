@@ -64,24 +64,22 @@ class _SafeSliderState extends State<SafeSlider> with TickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        _width = widget.width ?? constraints.maxWidth;
-        _height = widget.thumbSize;
-        _padding = _height / 2;
-        _strokeWidth = widget.strokeWidth;
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          _width = widget.width ?? constraints.maxWidth;
+          _height = widget.thumbSize;
+          _padding = _height / 2;
+          _strokeWidth = widget.strokeWidth;
 
-        return Center(
-          child: SizedBox(
-            width: _width,
-            height: _height,
-            child: CompositedTransformTarget(
-              link: _layerLink,
-              child: OverlayPortal(
-                controller: _overlayPortalController,
-                overlayChildBuilder: (context) {
-                  return _IndicatorContainer(
+          return Center(
+            child: SizedBox(
+              width: _width,
+              height: _height,
+              child: CompositedTransformTarget(
+                link: _layerLink,
+                child: OverlayPortal(
+                  controller: _overlayPortalController,
+                  overlayChildBuilder: (context) => _IndicatorContainer(
                     strokeWidth: _strokeWidth,
                     activeColor: widget.activeColor,
                     inactiveColor: widget.inactiveColor,
@@ -109,25 +107,23 @@ class _SafeSliderState extends State<SafeSlider> with TickerProviderStateMixin {
                     height: _height,
                     width: _width,
                     size: _height,
-                  );
-                },
-                child: CustomPaint(
-                  size: Size(_width, _height),
-                  painter: _TrackPainter(
-                    sliderPosition: _dragPosition,
-                    inactiveColor: _inactiveColor,
-                    activeColor: _activeColor,
-                    strokeWidth: _strokeWidth,
-                    padding: _padding,
+                  ),
+                  child: CustomPaint(
+                    size: Size(_width, _height),
+                    painter: _TrackPainter(
+                      sliderPosition: _dragPosition,
+                      inactiveColor: _inactiveColor,
+                      activeColor: _activeColor,
+                      strokeWidth: _strokeWidth,
+                      padding: _padding,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
 }
 
 class _TrackPainter extends CustomPainter {
@@ -200,9 +196,7 @@ class _TrackPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
 enum Direction {
