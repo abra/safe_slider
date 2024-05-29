@@ -321,7 +321,8 @@ class _IndicatorContainerState extends State<_IndicatorContainer> {
                     child: AnimatedAlign(
                       alignment: _labelAlignment,
                       duration: const Duration(milliseconds: 1100),
-                      curve: Curves.elasticOut,
+                      // curve: Curves.elasticOut,
+                      curve: const CustomElasticOutCurve(),
                       child: FittedBox(
                         child: Text(
                           key: textKey,
@@ -534,5 +535,24 @@ class _IndicatorContainerState extends State<_IndicatorContainer> {
         });
       }
     }
+  }
+}
+
+class CustomElasticOutCurve extends Curve {
+  const CustomElasticOutCurve({
+    this.period = 0.4,
+    this.bounceFactor = 0.5,
+  });
+
+  final double period;
+  final double bounceFactor;
+
+  @override
+  double transformInternal(double t) {
+    final double s = period / 4.0;
+    return bounceFactor *
+            pow(2.0, -10 * t) *
+            sin((t - s) * (pi * 2.0) / period) +
+        1.0;
   }
 }
