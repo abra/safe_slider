@@ -16,7 +16,7 @@ class SafeSlider extends StatefulWidget {
     this.thumbSize = 50.0,
     this.strokeWidth = 2.0,
     this.width,
-  }); //  : assert(min <= max),
+  }) : assert(min <= max);
 
   final double value;
   final ValueChanged<double> onChanged;
@@ -527,7 +527,9 @@ class _IndicatorContainerState extends State<_IndicatorContainer> {
             _isVerticalDrag = false;
             _isHorizontalDrag = false;
             _labelAlignment = Alignment.topCenter;
-            _canDrag = true;
+            Future<void>.delayed(const Duration(milliseconds: 300), () {
+              _canDrag = true;
+            });
           }
         });
       }

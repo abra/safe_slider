@@ -6,6 +6,12 @@ void main() {
   runApp(const MyApp());
 }
 
+const textStyle = TextStyle(
+  fontSize: 70,
+  fontFamily: 'DroidSansMono',
+  color: Color(0xFF323A46),
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -41,11 +47,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 40),
               Text(
                 _value.toStringAsFixed(2),
-                style: const TextStyle(
-                  fontSize: 70,
-                  fontFamily: 'DroidSansMono',
-                  color: Color(0xFF323A46),
-                ),
+                style: textStyle,
               ),
               const SizedBox(height: 80),
               SafeSlider(
