@@ -2,4 +2,7 @@
 
 An attempt to replicate the [Safe Slider](https://dribbble.com/shots/16721218-Slider) animation by [Oleg Frolov](https://dribbble.com/Volorf) on Flutter
 
-<img src="https://github.com/abra/safe-slider/assets/55690/ac4e872b-b6db-43db-80a6-2b15b4015a42" width="400"/>
+<img src="https://github.com/user-attachments/assets/3c5e759d-0390-42e1-90d9-4f11f08552d1" width="400"/>
+
+
+
