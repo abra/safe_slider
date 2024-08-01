@@ -61,6 +61,14 @@ class _HomePageState extends State<HomePage> {
                   });
                 },
               ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 60,
+                child: const Divider(
+                  thickness: 3,
+                  color: Colors.blueGrey,
+                ),
+              ),
             ],
           ),
         ),
