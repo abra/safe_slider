@@ -77,7 +77,7 @@ class _IndicatorState extends State<Indicator> {
 
   @override
   Widget build(BuildContext context) {
-    _updateLabelPadding();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _updateLabelPadding());
 
     return Center(
       child: CompositedTransformFollower(
@@ -143,12 +143,19 @@ class _IndicatorState extends State<Indicator> {
 
   void _updateLabelPadding() {
     final keyContext = _textKey.currentContext;
-    if (keyContext != null) {
-      final RenderBox box = keyContext.findRenderObject() as RenderBox;
-      _labelHorizontalPadding =
-          ((widget.thumbSize - box.size.width) / 2) - _strokeWidth;
-      _labelVerticalPadding =
-          ((widget.thumbSize - box.size.height) / 2) - _strokeWidth;
+    if (keyContext == null) return;
+    final box = keyContext.findRenderObject() as RenderBox?;
+    if (box == null || !box.hasSize) return;
+    final hPadding =
+        (((widget.thumbSize - box.size.width) / 2) - _strokeWidth).clamp(0.0, double.infinity);
+    final vPadding =
+        (((widget.thumbSize - box.size.height) / 2) - _strokeWidth).clamp(0.0, double.infinity);
+    if (hPadding != _labelHorizontalPadding ||
+        vPadding != _labelVerticalPadding) {
+      setState(() {
+        _labelHorizontalPadding = hPadding;
+        _labelVerticalPadding = vPadding;
+      });
     }
   }
 
@@ -196,14 +203,14 @@ class _IndicatorState extends State<Indicator> {
     final percentage =
         (offset.dx - _thumbRadius) / (_trackWidth - (_thumbRadius * 2));
     widget.onDragged(percentage);
-    _thumbOffset = Offset(offset.dx + details.delta.dx, 0);
-    _indicatorLeft = offset.dx - _thumbRadius;
-    _indicatorRight = _trackWidth - offset.dx - _thumbRadius;
     setState(() {
+      final unclamped = Offset(offset.dx + details.delta.dx, 0);
       _thumbOffset = Offset(
-        _thumbOffset.dx.clamp(_thumbRadius, _trackWidth - _thumbRadius),
-        _thumbOffset.dy,
+        unclamped.dx.clamp(_thumbRadius, _trackWidth - _thumbRadius),
+        unclamped.dy,
       );
+      _indicatorLeft = offset.dx - _thumbRadius;
+      _indicatorRight = _trackWidth - offset.dx - _thumbRadius;
     });
   }
 

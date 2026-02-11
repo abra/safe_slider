@@ -9,16 +9,22 @@ class SafeSlider extends StatefulWidget {
     super.key,
     required this.value,
     required this.onChanged,
+    this.min = SafeSliderDefaults.min,
+    this.max = SafeSliderDefaults.max,
+    this.labelDecimalPlaces = SafeSliderDefaults.labelDecimalPlaces,
     this.activeColor = SafeSliderDefaults.activeColor,
     this.inactiveColor = SafeSliderDefaults.inactiveColor,
     this.warningColor = SafeSliderDefaults.warningColor,
     this.thumbSize = SafeSliderDefaults.thumbSize,
     this.strokeWidth = SafeSliderDefaults.strokeWidth,
     this.width,
-  });
+  }) : assert(min < max, 'min must be less than max');
 
   final double value;
   final ValueChanged<double> onChanged;
+  final double min;
+  final double max;
+  final int labelDecimalPlaces;
   final Color activeColor;
   final Color inactiveColor;
   final Color warningColor;
@@ -31,7 +37,7 @@ class SafeSlider extends StatefulWidget {
 }
 
 class _SafeSliderState extends State<SafeSlider> {
-  double _thumbPosition = 0.0;
+  late double _ratio;
   final LayerLink _layerLink = LayerLink();
   late Color _trackActiveColor;
   late OverlayPortalController _overlayPortalController;
@@ -39,9 +45,16 @@ class _SafeSliderState extends State<SafeSlider> {
   @override
   void initState() {
     super.initState();
+    _ratio = ((widget.value - widget.min) / (widget.max - widget.min))
+        .clamp(0.0, 1.0);
     _trackActiveColor = widget.activeColor;
     _overlayPortalController = OverlayPortalController();
     _overlayPortalController.show();
+  }
+
+  String _labelValue() {
+    final value = widget.min + _ratio * (widget.max - widget.min);
+    return value.toStringAsFixed(widget.labelDecimalPlaces);
   }
 
   @override
@@ -64,20 +77,19 @@ class _SafeSliderState extends State<SafeSlider> {
                     strokeWidth: strokeWidth,
                     activeColor: widget.activeColor,
                     warningColor: widget.warningColor,
-                    label: (_thumbPosition / (width - thumbRadius * 2))
-                        .toStringAsFixed(SafeSliderDefaults.labelDecimalPlaces),
+                    label: _labelValue(),
                     link: _layerLink,
                     onWarningChanged: (value) {
                       setState(() {
-                        _trackActiveColor = value == _trackActiveColor
-                            ? widget.activeColor
-                            : value;
+                        _trackActiveColor = value;
                       });
                     },
-                    onDragged: (value) {
+                    onDragged: (ratio) {
+                      final value =
+                          widget.min + ratio * (widget.max - widget.min);
                       widget.onChanged(value);
                       setState(() {
-                        _thumbPosition = value * (width - thumbRadius * 2);
+                        _ratio = ratio;
                       });
                     },
                     height: height,
@@ -87,7 +99,7 @@ class _SafeSliderState extends State<SafeSlider> {
                   child: CustomPaint(
                     size: Size(width, height),
                     painter: TrackPainter(
-                      thumbPosition: _thumbPosition,
+                      thumbPosition: _ratio * (width - thumbRadius * 2),
                       inactiveColor: widget.inactiveColor,
                       activeColor: _trackActiveColor,
                       strokeWidth: strokeWidth,

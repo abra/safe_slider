@@ -8,7 +8,7 @@ class ElasticOutCurve extends Curve {
   const ElasticOutCurve({
     this.period = SafeSliderDefaults.elasticPeriod,
     this.bounceFactor = SafeSliderDefaults.elasticBounceFactor,
-  });
+  }) : assert(period > 0, 'period must be greater than 0');
 
   final double period;
   final double bounceFactor;

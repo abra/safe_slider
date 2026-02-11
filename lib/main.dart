@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        debugShowMaterialGrid: false,
         theme: ThemeData(
           brightness: Brightness.light,
         ),
@@ -43,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     color: SafeSliderDefaults.activeColor,
   );
 
-  double _value = 0.0;
+  double _value = 1.0;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +57,15 @@ class _HomePageState extends State<HomePage> {
           children: [
             const SizedBox(height: _topSpacing),
             Text(
-              _value.toStringAsFixed(SafeSliderDefaults.labelDecimalPlaces),
+              _value.toStringAsFixed(1),
               style: _textStyle,
             ),
             const SizedBox(height: _sliderSpacing),
             SafeSlider(
               value: _value,
+              min: 1,
+              max: 10,
+              labelDecimalPlaces: 1,
               width: sliderWidth,
               strokeWidth: _strokeWidth,
               thumbSize: _thumbSize,

@@ -17,6 +17,10 @@ abstract final class SafeSliderDefaults {
   static const String fontFamily = 'DroidSansMono';
   static const FontWeight labelFontWeight = FontWeight.w700;
 
+  // Range
+  static const double min = 0.0;
+  static const double max = 1.0;
+
   // Gesture
   static const double angleThreshold = 25.0;
   static const double maxStretchRatio = 1.8;
