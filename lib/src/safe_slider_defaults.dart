@@ -29,6 +29,7 @@ abstract final class SafeSliderDefaults {
   static const Duration snapDuration = Duration(milliseconds: 150);
   static const Duration bounceDuration = Duration(milliseconds: 1100);
   static const Duration unlockDelay = Duration(milliseconds: 300);
+  static const Duration labelBounceDelay = Duration(milliseconds: 150);
   static const double elasticPeriod = 0.4;
   static const double elasticBounceFactor = 0.5;
 }

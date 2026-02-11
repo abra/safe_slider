@@ -281,7 +281,13 @@ class _IndicatorState extends State<Indicator> {
           if (_indicatorHeight == _maxStretchHeight) {
             _verticalAllowed = false;
             _horizontalAllowed = false;
-            _labelAlignment = Alignment.topCenter;
+            Future<void>.delayed(SafeSliderDefaults.labelBounceDelay, () {
+              if (mounted) {
+                setState(() {
+                  _labelAlignment = Alignment.topCenter;
+                });
+              }
+            });
             Future<void>.delayed(SafeSliderDefaults.unlockDelay, () {
               if (mounted) _isUnlocked = true;
             });
