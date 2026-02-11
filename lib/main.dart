@@ -6,12 +6,6 @@ void main() {
   runApp(const MyApp());
 }
 
-const textStyle = TextStyle(
-  fontSize: 70,
-  fontFamily: 'DroidSansMono',
-  color: Color(0xFF323A46),
-);
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -34,43 +28,62 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static const double _topSpacing = 40;
+  static const double _sliderSpacing = 80;
+  static const double _dividerSpacing = 10;
+  static const double _horizontalInset = 60;
+  static const double _valueFontSize = 70;
+  static const double _dividerThickness = 3;
+  static const double _thumbSize = 80;
+  static const double _strokeWidth = 3;
+
+  static const _textStyle = TextStyle(
+    fontSize: _valueFontSize,
+    fontFamily: SafeSliderDefaults.fontFamily,
+    color: SafeSliderDefaults.activeColor,
+  );
+
   double _value = 0.0;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Safe Slider'),
+  Widget build(BuildContext context) {
+    final sliderWidth = MediaQuery.sizeOf(context).width - _horizontalInset;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Safe Slider'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(height: _topSpacing),
+            Text(
+              _value.toStringAsFixed(SafeSliderDefaults.labelDecimalPlaces),
+              style: _textStyle,
+            ),
+            const SizedBox(height: _sliderSpacing),
+            SafeSlider(
+              value: _value,
+              width: sliderWidth,
+              strokeWidth: _strokeWidth,
+              thumbSize: _thumbSize,
+              onChanged: (value) {
+                setState(() {
+                  _value = value;
+                });
+              },
+            ),
+            const SizedBox(height: _dividerSpacing),
+            SizedBox(
+              width: sliderWidth,
+              child: const Divider(
+                thickness: _dividerThickness,
+                color: Colors.blueGrey,
+              ),
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
-              Text(
-                _value.toStringAsFixed(2),
-                style: textStyle,
-              ),
-              const SizedBox(height: 80),
-              SafeSlider(
-                value: _value,
-                width: MediaQuery.of(context).size.width - 60,
-                strokeWidth: 3,
-                thumbSize: 80,
-                onChanged: (value) {
-                  setState(() {
-                    _value = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 60,
-                child: const Divider(
-                  thickness: 3,
-                  color: Colors.blueGrey,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      ),
+    );
+  }
 }
